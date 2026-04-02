@@ -50,6 +50,14 @@ function StatusBadge({ status }: { status: SyncStatus }) {
       </span>
     )
   }
+  if (status === 'permission-denied') {
+    return (
+      <span className="flex items-center gap-1.5 text-xs text-red-400">
+        <ExclamationTriangleIcon className="w-3.5 h-3.5" />
+        Permission denied — Firestore rules not deployed
+      </span>
+    )
+  }
   return null
 }
 

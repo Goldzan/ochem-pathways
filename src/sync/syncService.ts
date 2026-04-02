@@ -2,7 +2,7 @@ import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore'
 import { db } from './firebase'
 import type { FunctionalGroup, Reaction } from '@/types'
 
-export type SyncStatus = 'idle' | 'connecting' | 'synced' | 'error'
+export type SyncStatus = 'idle' | 'connecting' | 'synced' | 'error' | 'permission-denied'
 
 interface SyncData {
   groups: Record<string, FunctionalGroup>
@@ -60,14 +60,15 @@ export async function startSync(
         isApplyingRemoteUpdate = false
         callbacks.onStatus('synced')
       },
-      () => {
-        callbacks.onStatus('error')
+      (err) => {
+        callbacks.onStatus(err.code === 'permission-denied' ? 'permission-denied' : 'error')
       }
     )
 
     callbacks.onStatus('synced')
-  } catch {
-    callbacks.onStatus('error')
+  } catch (err: unknown) {
+    const code = (err as { code?: string }).code
+    callbacks.onStatus(code === 'permission-denied' ? 'permission-denied' : 'error')
   }
 }
 

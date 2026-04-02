@@ -29,7 +29,7 @@ export interface Reaction {
 
 export type ActiveView = 'list' | 'graph'
 
-export type SyncStatus = 'idle' | 'connecting' | 'synced' | 'error'
+export type SyncStatus = 'idle' | 'connecting' | 'synced' | 'error' | 'permission-denied'
 
 export interface AppStore {
   groups: Record<string, FunctionalGroup>

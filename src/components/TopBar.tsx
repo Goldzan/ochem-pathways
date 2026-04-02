@@ -11,6 +11,7 @@ function SyncDot({ status }: { status: SyncStatus }) {
     connecting: 'bg-amber-400 animate-pulse',
     synced: 'bg-green-400',
     error: 'bg-red-400',
+    'permission-denied': 'bg-red-400',
   }
   return (
     <span
