@@ -1,4 +1,4 @@
-import { BeakerIcon, PlusIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline'
+import { BeakerIcon, PlusIcon, CloudArrowUpIcon, AcademicCapIcon } from '@heroicons/react/24/outline'
 import { ViewToggle } from './ViewToggle'
 import { StudyModeToggle } from './StudyModeToggle'
 import { Button } from './shared/Button'
@@ -23,6 +23,7 @@ function SyncDot({ status }: { status: SyncStatus }) {
 export function TopBar() {
   const openGroupModal = useStore((s) => s.openGroupModal)
   const openSyncModal = useStore((s) => s.openSyncModal)
+  const openTestModal = useStore((s) => s.openTestModal)
   const syncStatus = useStore((s) => s.syncStatus)
 
   return (
@@ -41,6 +42,14 @@ export function TopBar() {
       <div className="flex-1" />
 
       <StudyModeToggle />
+
+      <button
+        onClick={openTestModal}
+        title="Test yourself"
+        className="p-1.5 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-elevated transition-colors"
+      >
+        <AcademicCapIcon className="w-5 h-5" />
+      </button>
 
       <button
         onClick={openSyncModal}

@@ -27,6 +27,7 @@ export const useStore = create<AppStore>()(
       syncCode: null,
       syncStatus: 'idle',
       syncModalOpen: false,
+      testModalOpen: false,
 
       addGroup: (group: Omit<FunctionalGroup, 'id' | 'createdAt'>) => {
         const id = uuidv4()
@@ -144,6 +145,8 @@ export const useStore = create<AppStore>()(
       setSyncStatus: (status) => set({ syncStatus: status }),
       openSyncModal: () => set({ syncModalOpen: true }),
       closeSyncModal: () => set({ syncModalOpen: false }),
+      openTestModal: () => set({ testModalOpen: true }),
+      closeTestModal: () => set({ testModalOpen: false }),
       loadDataFromSync: (groups: Record<string, FunctionalGroup>, reactions: Record<string, Reaction>) =>
         set({ groups, reactions }),
 

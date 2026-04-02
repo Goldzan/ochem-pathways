@@ -7,6 +7,7 @@ import { GroupModal } from './modals/GroupModal'
 import { ReactionModal } from './modals/ReactionModal'
 import { DeleteConfirmModal } from './modals/DeleteConfirmModal'
 import { SyncModal } from './modals/SyncModal'
+import { TestModal } from './modals/TestModal'
 import { DetailPanel } from './panels/DetailPanel'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { useStore, useActiveView, useStudyMode } from './store'
@@ -143,6 +144,7 @@ function App() {
       <ReactionModal />
       <DeleteConfirmModal />
       <SyncModal onStart={handleSyncStart} onStop={handleSyncStop} />
+      <TestModal />
     </div>
     </ErrorBoundary>
   )

@@ -11,6 +11,7 @@ import { Modal } from '@/components/shared/Modal'
 import { Button } from '@/components/shared/Button'
 import { Input } from '@/components/shared/Input'
 import { useStore } from '@/store'
+import { pushData } from '@/sync/syncService'
 import type { SyncStatus } from '@/types'
 
 interface SyncModalProps {
@@ -67,9 +68,13 @@ export function SyncModal({ onStart, onStop }: SyncModalProps) {
   const syncModalOpen = useStore((s) => s.syncModalOpen)
   const closeSyncModal = useStore((s) => s.closeSyncModal)
 
+  const groups = useStore((s) => s.groups)
+  const reactions = useStore((s) => s.reactions)
+
   const [inputCode, setInputCode] = useState('')
   const [copied, setCopied] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [pushing, setPushing] = useState(false)
   const [inputError, setInputError] = useState('')
 
   const handleGenerate = useCallback(async () => {
@@ -98,6 +103,13 @@ export function SyncModal({ onStart, onStop }: SyncModalProps) {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }, [syncCode])
+
+  const handleForcePush = useCallback(async () => {
+    if (!syncCode) return
+    setPushing(true)
+    await pushData(syncCode, groups, reactions)
+    setPushing(false)
+  }, [syncCode, groups, reactions])
 
   const handleStop = useCallback(() => {
     onStop()
@@ -138,7 +150,20 @@ export function SyncModal({ onStart, onStop }: SyncModalProps) {
             device will appear on all connected devices.
           </p>
 
-          <div className="pt-1 border-t border-border">
+          <div className="pt-1 border-t border-border flex items-center justify-between">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleForcePush}
+              disabled={pushing || syncStatus === 'connecting'}
+            >
+              {pushing ? (
+                <ArrowPathIcon className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <ArrowPathIcon className="w-3.5 h-3.5" />
+              )}
+              {pushing ? 'Pushing…' : 'Push now'}
+            </Button>
             <Button variant="danger" size="sm" onClick={handleStop}>
               Stop syncing
             </Button>

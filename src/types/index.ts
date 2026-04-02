@@ -51,6 +51,7 @@ export interface AppStore {
   syncCode: string | null
   syncStatus: SyncStatus
   syncModalOpen: boolean
+  testModalOpen: boolean
 
   addGroup: (group: Omit<FunctionalGroup, 'id' | 'createdAt'>) => void
   updateGroup: (id: string, patch: Partial<FunctionalGroup>) => void
@@ -76,4 +77,6 @@ export interface AppStore {
   openSyncModal: () => void
   closeSyncModal: () => void
   loadDataFromSync: (groups: Record<string, FunctionalGroup>, reactions: Record<string, Reaction>) => void
+  openTestModal: () => void
+  closeTestModal: () => void
 }
