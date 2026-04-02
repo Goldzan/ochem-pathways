@@ -24,6 +24,10 @@ export const useStore = create<AppStore>()(
       deleteConfirmId: null,
       deleteConfirmType: null,
 
+      syncCode: null,
+      syncStatus: 'idle',
+      syncModalOpen: false,
+
       addGroup: (group: Omit<FunctionalGroup, 'id' | 'createdAt'>) => {
         const id = uuidv4()
         set((s) => ({
@@ -136,6 +140,13 @@ export const useStore = create<AppStore>()(
 
       closeDeleteConfirm: () => set({ deleteConfirmId: null, deleteConfirmType: null }),
 
+      setSyncCode: (code) => set({ syncCode: code }),
+      setSyncStatus: (status) => set({ syncStatus: status }),
+      openSyncModal: () => set({ syncModalOpen: true }),
+      closeSyncModal: () => set({ syncModalOpen: false }),
+      loadDataFromSync: (groups: Record<string, FunctionalGroup>, reactions: Record<string, Reaction>) =>
+        set({ groups, reactions }),
+
       // Selector helpers (not persisted)
       ...({} as object),
     }),
@@ -145,6 +156,7 @@ export const useStore = create<AppStore>()(
       partialize: (state) => ({
         groups: state.groups,
         reactions: state.reactions,
+        syncCode: state.syncCode,
       }),
     }
   )

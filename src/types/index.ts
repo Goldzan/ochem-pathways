@@ -29,6 +29,8 @@ export interface Reaction {
 
 export type ActiveView = 'list' | 'graph'
 
+export type SyncStatus = 'idle' | 'connecting' | 'synced' | 'error'
+
 export interface AppStore {
   groups: Record<string, FunctionalGroup>
   reactions: Record<string, Reaction>
@@ -45,6 +47,10 @@ export interface AppStore {
   reactionModalEditId: string | null
   deleteConfirmId: string | null
   deleteConfirmType: 'group' | 'reaction' | null
+
+  syncCode: string | null
+  syncStatus: SyncStatus
+  syncModalOpen: boolean
 
   addGroup: (group: Omit<FunctionalGroup, 'id' | 'createdAt'>) => void
   updateGroup: (id: string, patch: Partial<FunctionalGroup>) => void
@@ -64,4 +70,10 @@ export interface AppStore {
   closeReactionModal: () => void
   openDeleteConfirm: (id: string, type: 'group' | 'reaction') => void
   closeDeleteConfirm: () => void
+
+  setSyncCode: (code: string | null) => void
+  setSyncStatus: (status: SyncStatus) => void
+  openSyncModal: () => void
+  closeSyncModal: () => void
+  loadDataFromSync: (groups: Record<string, FunctionalGroup>, reactions: Record<string, Reaction>) => void
 }
