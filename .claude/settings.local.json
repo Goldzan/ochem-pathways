@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(node -e \"const cy = require\\('./node_modules/cytoscape'\\); const dagre = require\\('./node_modules/cytoscape-dagre'\\); cy.use\\(dagre\\); console.log\\('dagre OK'\\)\")",
+      "Bash(node -e \"const m = require\\('./node_modules/react-cytoscapejs'\\); console.log\\(typeof m, typeof m.default\\)\")",
+      "Bash(grep -o '--color-bg[^;]*;' /c/ClaudeCode/OChem/dist/assets/index-BMLkRYnQ.css)",
+      "Bash(node -e ':*)",
+      "Bash(gh auth:*)"
+    ]
+  }
+}
