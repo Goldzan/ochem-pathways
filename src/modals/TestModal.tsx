@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowDownIcon } from '@heroicons/react/24/outline'
 import { Modal } from '@/components/shared/Modal'
@@ -88,17 +88,33 @@ interface ReactionStepProps {
 }
 
 function ReactionStep({ reaction }: ReactionStepProps) {
+  const mechanismImages = reaction.mechanism.filter((s) => s.imageDataUrl)
+
   return (
-    <div className="flex items-start gap-3 pl-5">
-      <div className="flex flex-col items-center pt-0.5">
-        <ArrowDownIcon className="w-4 h-4 text-blue-400" />
+    <div className="flex flex-col gap-2 pl-5">
+      <div className="flex items-start gap-3">
+        <div className="flex flex-col items-center pt-0.5">
+          <ArrowDownIcon className="w-4 h-4 text-blue-400" />
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-blue-400">{reaction.name}</p>
+          {reaction.conditions && (
+            <p className="text-xs text-text-secondary mt-0.5">{reaction.conditions}</p>
+          )}
+        </div>
       </div>
-      <div>
-        <p className="text-xs font-semibold text-blue-400">{reaction.name}</p>
-        {reaction.conditions && (
-          <p className="text-xs text-text-secondary mt-0.5">{reaction.conditions}</p>
-        )}
-      </div>
+      {mechanismImages.length > 0 && (
+        <div className="flex flex-col gap-2 pl-7">
+          {mechanismImages.map((step) => (
+            <img
+              key={step.id}
+              src={step.imageDataUrl}
+              alt={step.description || 'Mechanism step'}
+              className="max-w-full rounded-lg border border-border"
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -167,6 +183,22 @@ export function TestModal() {
   }
 
   const groupCount = Object.keys(groups).length
+
+  useEffect(() => {
+    if (!open) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter') return
+      if (groupCount >= 2 && !question) {
+        handleGenerate()
+      } else if (question && !revealed) {
+        setRevealed(true)
+      } else if (question && revealed) {
+        handleGenerate()
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [open, question, revealed, groupCount, handleGenerate])
 
   const difficultyConfig = {
     easy: {
